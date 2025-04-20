@@ -1,0 +1,386 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My AI Tools Collection</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary: #6c63ff;
+            --secondary: #4d44db;
+            --dark: #2a2a72;
+            --light: #f8f9fa;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f7ff;
+            color: #333;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: white;
+            padding: 2rem 0;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Tool Cards */
+        .tool-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .tool-card .card-body {
+            padding: 1.5rem;
+        }
+
+        .tool-card .tool-logo {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-right: 12px;
+        }
+
+        .tool-card .tool-name {
+            font-weight: 600;
+            margin-bottom: 0;
+        }
+
+        .tool-card .tool-category {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            background: rgba(108, 99, 255, 0.1);
+            color: var(--primary);
+        }
+
+        .tool-card .tool-description {
+            color: #666;
+            font-size: 14px;
+            margin: 10px 0;
+        }
+
+        .tool-card .tool-link {
+            color: var(--primary);
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        /* Add Tool Button */
+        .add-tool-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3);
+            z-index: 100;
+            border: none;
+            transition: all 0.3s;
+        }
+
+        .add-tool-btn:hover {
+            background: var(--secondary);
+            transform: scale(1.1);
+        }
+
+        /* Modal Styling */
+        .modal-content {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            border-bottom: none;
+            padding: 1.5rem;
+        }
+
+        .modal-title {
+            font-weight: 600;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 10px 15px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(108, 99, 255, 0.25);
+        }
+
+        /* Category Badges */
+        .category-badge {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .category-badge:hover {
+            opacity: 0.8;
+        }
+
+        /* Dark Mode Toggle */
+        .dark-mode {
+            background-color: #1a1a2e;
+            color: #f8f9fa;
+        }
+
+        .dark-mode .tool-card {
+            background-color: #16213e;
+            color: #f8f9fa;
+        }
+
+        .dark-mode .tool-card .tool-description {
+            color: #ccc;
+        }
+
+        .dark-mode .form-control, .dark-mode .form-select {
+            background-color: #0f3460;
+            color: #f8f9fa;
+            border-color: #0f3460;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header text-center mb-5">
+        <div class="container">
+            <h1 class="display-5 fw-bold mb-3">My AI Tools Collection</h1>
+            <p class="lead mb-4">Organize and access your favorite AI tools in one place</p>
+            <div class="d-flex justify-content-center gap-2">
+                <button class="btn btn-outline-light" id="filterAll">All</button>
+                <button class="btn btn-outline-light" id="filterText">Text</button>
+                <button class="btn btn-outline-light" id="filterImage">Image</button>
+                <button class="btn btn-outline-light" id="filterVideo">Video</button>
+                <button class="btn btn-outline-light" id="filterAudio">Audio</button>
+                <button class="btn btn-outline-light" id="filterCode">Code</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container mb-5">
+        <div class="row" id="toolsContainer">
+            <!-- Tools will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Add Tool Button -->
+    <button class="add-tool-btn" data-bs-toggle="modal" data-bs-target="#addToolModal">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <!-- Add Tool Modal -->
+    <div class="modal fade" id="addToolModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Tool</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="toolForm">
+                        <div class="mb-3">
+                            <label for="toolName" class="form-label">Tool Name*</label>
+                            <input type="text" class="form-control" id="toolName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="toolUrl" class="form-label">Tool URL*</label>
+                            <input type="url" class="form-control" id="toolUrl" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="toolCategory" class="form-label">Category*</label>
+                            <select class="form-select" id="toolCategory" required>
+                                <option value="text">Text</option>
+                                <option value="image">Image</option>
+                                <option value="video">Video</option>
+                                <option value="audio">Audio</option>
+                                <option value="code">Code</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="toolDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="toolDescription" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="toolLogo" class="form-label">Logo URL (optional)</label>
+                            <input type="url" class="form-control" id="toolLogo" placeholder="https://example.com/logo.png">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveTool">Save Tool</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap & JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // DOM Elements
+        const toolsContainer = document.getElementById('toolsContainer');
+        const toolForm = document.getElementById('toolForm');
+        const saveToolBtn = document.getElementById('saveTool');
+        const filterButtons = {
+            all: document.getElementById('filterAll'),
+            text: document.getElementById('filterText'),
+            image: document.getElementById('filterImage'),
+            video: document.getElementById('filterVideo'),
+            audio: document.getElementById('filterAudio'),
+            code: document.getElementById('filterCode')
+        };
+
+        // Load tools from localStorage
+        let tools = JSON.parse(localStorage.getItem('aiTools')) || [];
+
+        // Display all tools
+        function displayTools(filter = 'all') {
+            toolsContainer.innerHTML = '';
+            
+            const filteredTools = filter === 'all' 
+                ? tools 
+                : tools.filter(tool => tool.category === filter);
+            
+            if (filteredTools.length === 0) {
+                toolsContainer.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <h5>No tools found</h5>
+                        <p>Click the + button to add your first tool!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            filteredTools.forEach((tool, index) => {
+                const toolCard = document.createElement('div');
+                toolCard.className = 'col-md-6 col-lg-4';
+                toolCard.innerHTML = `
+                    <div class="tool-card card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <img src="${tool.logo || 'https://via.placeholder.com/40'}" 
+                                     class="tool-logo" 
+                                     alt="${tool.name} logo"
+                                     onerror="this.src='https://via.placeholder.com/40'">
+                                <div>
+                                    <h5 class="tool-name">${tool.name}</h5>
+                                    <span class="tool-category">${tool.category}</span>
+                                </div>
+                            </div>
+                            <p class="tool-description">${tool.description || 'No description provided.'}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="${tool.url}" target="_blank" class="tool-link">Visit Tool <i class="fas fa-external-link-alt ms-1"></i></a>
+                                <button class="btn btn-sm btn-outline-danger delete-tool" data-id="${index}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                toolsContainer.appendChild(toolCard);
+            });
+
+            // Add delete event listeners
+            document.querySelectorAll('.delete-tool').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = e.target.getAttribute('data-id') || 
+                              e.target.parentElement.getAttribute('data-id');
+                    deleteTool(id);
+                });
+            });
+        }
+
+        // Save a new tool
+        function saveTool() {
+            const tool = {
+                name: document.getElementById('toolName').value,
+                url: document.getElementById('toolUrl').value,
+                category: document.getElementById('toolCategory').value,
+                description: document.getElementById('toolDescription').value,
+                logo: document.getElementById('toolLogo').value || null
+            };
+            
+            tools.push(tool);
+            localStorage.setItem('aiTools', JSON.stringify(tools));
+            
+            // Reset form
+            toolForm.reset();
+            
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('addToolModal'));
+            modal.hide();
+            
+            // Refresh display
+            displayTools();
+        }
+
+        // Delete a tool
+        function deleteTool(id) {
+            if (confirm('Are you sure you want to delete this tool?')) {
+                tools.splice(id, 1);
+                localStorage.setItem('aiTools', JSON.stringify(tools));
+                displayTools();
+            }
+        }
+
+        // Event Listeners
+        saveToolBtn.addEventListener('click', saveTool);
+
+        // Filter buttons
+        Object.keys(filterButtons).forEach(key => {
+            filterButtons[key].addEventListener('click', () => {
+                displayTools(key);
+            });
+        });
+
+        // Initialize
+        displayTools();
+    </script>
+</body>
+</html>
